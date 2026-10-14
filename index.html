@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bengal 100 - Male TV & Drama Stars</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emeraldDeep: '#061812',
+                        emeraldDark: '#0B231B',
+                        emeraldCard: '#112E24',
+                        amberGold: '#E5A93C',
+                        roseGold: '#D4AF37',
+                        lightGold: '#F8E2A0',
+                        creamWhite: '#FAF8F5',
+                        subtleGlass: 'rgba(17, 46, 36, 0.75)'
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        playfair: ['Playfair Display', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #061812;
+            color: #FAF8F5;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: rgba(17, 46, 36, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(229, 169, 60, 0.22);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-card-hover {
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card-hover:hover {
+            transform: translateY(-6px);
+            border-color: rgba(229, 169, 60, 0.6);
+            box-shadow: 0 16px 40px rgba(229, 169, 60, 0.15);
+        }
+
+        /* Gold Gradient Text & Borders */
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FAF8F5 0%, #E5A93C 50%, #D4AF37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-gradient-bg {
+            background: linear-gradient(135deg, #E5A93C 0%, #D4AF37 100%);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #061812;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E5A93C;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #D4AF37;
+        }
+
+        /* Canvas Overlay */
+        #sparkleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Smooth tab highlight */
+        .tab-active {
+            background: linear-gradient(135deg, #E5A93C 0%, #D4AF37 100%);
+            color: #061812 !important;
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(229, 169, 60, 0.4);
+        }
+
+        /* Pulse animation for Live Badge */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+        .live-pulse {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="relative min-h-screen text-creamWhite selection:bg-amberGold selection:text-emeraldDeep">
+
+    <canvas id="sparkleCanvas"></canvas>
+
+    <div class="relative z-10 flex flex-col min-h-screen">
+        
+        <!-- HEADER & NAVIGATION -->
+        <header class="sticky top-0 z-40 glass-card border-b border-amberGold/30 px-4 lg:px-8 py-3 transition-all duration-300">
+            <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-4">
+                
+                <!-- Logo -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full gold-gradient-bg flex items-center justify-center text-emeraldDeep font-cinzel font-black text-xl shadow-lg">
+                        B
+                    </div>
+                    <div>
+                        <h1 class="font-cinzel text-xl md:text-2xl font-bold tracking-widest gold-gradient-text leading-tight">
+                            BENGAL 100
+                        </h1>
+                        <p class="text-[10px] tracking-widest text-amberGold/80 uppercase font-medium">
+                            TV & Drama Stars Haven
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Main Nav Links -->
+                <nav class="flex items-center gap-1 md:gap-2 bg-emeraldDark/80 p-1.5 rounded-full border border-amberGold/20">
+                    <button onclick="switchMainTab('directory')" id="nav-directory" class="px-4 py-2 rounded-full text-xs md:text-sm font-semibold transition-all tab-active">
+                        <i class="fa-solid font-bold fa-users-rectangle mr-1.5"></i>Directory
+                    </button>
+                    <button onclick="switchMainTab('dreamfeed')" id="nav-dreamfeed" class="px-4 py-2 rounded-full text-xs md:text-sm font-semibold text-creamWhite/80 hover:text-amberGold transition-all">
+                        <i class="fa-solid fa-square-rss mr-1.5"></i>Dream Feed
+                    </button>
+                    <button onclick="switchMainTab('livestream')" id="nav-livestream" class="px-4 py-2 rounded-full text-xs md:text-sm font-semibold text-creamWhite/80 hover:text-amberGold transition-all flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-red-500 live-pulse"></span>
+                        <span>Filmy Stream</span>
+                    </button>
+                    <button onclick="switchMainTab('executive')" id="nav-executive" class="px-4 py-2 rounded-full text-xs md:text-sm font-semibold text-creamWhite/80 hover:text-amberGold transition-all">
+                        <i class="fa-solid fa-crown mr-1.5 text-amberGold"></i>Executive Hub
+                    </button>
+                </nav>
+
+                <!-- Search & Actions -->
+                <div class="flex items-center gap-3 w-full lg:w-auto">
+                    <!-- Quick Search Bar -->
+                    <div class="relative flex-1 lg:w-64">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-amberGold/60 text-xs"></i>
+                        <input type="text" id="globalSearchInput" oninput="handleSearch()" placeholder="Search actor, drama, network..." class="w-full bg-emeraldDark/90 border border-amberGold/30 rounded-full pl-9 pr-4 py-1.5 text-xs text-creamWhite placeholder-creamWhite/40 focus:outline-none focus:border-amberGold transition-all">
+                    </div>
+
+                    <!-- Source Code Exporter Button -->
+                    <button onclick="openExporterModal()" class="px-3 py-1.5 rounded-full border border-amberGold/40 bg-amberGold/10 hover:bg-amberGold hover:text-emeraldDeep text-amberGold text-xs font-semibold transition-all flex items-center gap-1.5 whitespace-nowrap shadow-md">
+                        <i class="fa-solid fa-code"></i>
+                        <span class="hidden sm:inline">Export Code</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6">
+
+            <!-- SECTION 1: DIRECTORY TAB -->
+            <section id="section-directory" class="space-y-6">
+                <!-- Hero Banner -->
+                <div class="glass-card rounded-2xl p-6 md:p-8 relative overflow-hidden border border-amberGold/30">
+                    <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-amberGold/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="max-w-3xl space-y-3 relative z-10">
+                        <span class="px-3 py-1 rounded-full text-[11px] font-bold tracking-widest uppercase bg-amberGold/20 text-amberGold border border-amberGold/30">
+                            100 Legendary & Contemporary Male Stars
+                        </span>
+                        <h2 class="font-cinzel text-2xl md:text-4xl font-bold text-creamWhite leading-tight">
+                            The Royalty of Bengali Television & Telefilms
+                        </h2>
+                        <p class="text-sm text-creamWhite/70 leading-relaxed font-light">
+                            Discover top male actors across Bangladesh Television (BTV), Dhallywood TV dramas, and Kolkata’s Zee Bangla & Star Jalsha mega-serials. Explore complete filmographies, brand deals, fan forums, and executive media insights.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Filters & Sorting Bar -->
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4 glass-card p-4 rounded-xl border border-amberGold/20">
+                    <!-- Filter Tabs -->
+                    <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0">
+                        <button onclick="filterCategory('all')" id="filter-all" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-amberGold text-emeraldDeep transition-all whitespace-nowrap">
+                            All Stars (100)
+                        </button>
+                        <button onclick="filterCategory('bd')" id="filter-bd" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-creamWhite/80 hover:bg-emeraldDark transition-all whitespace-nowrap">
+                            Bangladesh Drama Stars
+                        </button>
+                        <button onclick="filterCategory('kolkata')" id="filter-kolkata" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-creamWhite/80 hover:bg-emeraldDark transition-all whitespace-nowrap">
+                            Kolkata TV Serial Leads
+                        </button>
+                        <button onclick="filterCategory('golden')" id="filter-golden" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-creamWhite/80 hover:bg-emeraldDark transition-all whitespace-nowrap">
+                            Golden Era Classics
+                        </button>
+                        <button onclick="filterCategory('ott')" id="filter-ott" class="filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-creamWhite/80 hover:bg-emeraldDark transition-all whitespace-nowrap">
+                            OTT & Megaserial Idols
+                        </button>
+                    </div>
+
+                    <!-- Sorting Options -->
+                    <div class="flex items-center gap-2 w-full md:w-auto justify-end">
+                        <span class="text-xs text-creamWhite/60 whitespace-nowrap"><i class="fa-solid fa-arrow-down-wide-short mr-1"></i>Sort:</span>
+                        <select id="sortSelect" onchange="handleSort()" class="bg-emeraldDark border border-amberGold/30 text-xs text-creamWhite rounded-lg px-3 py-1.5 focus:outline-none focus:border-amberGold">
+                            <option value="pop">Popularity (High - Low)</option>
+                            <option value="serials">Total Serials/Dramas</option>
+                            <option value="fans">Fan Followers Count</option>
+                            <option value="name">Actor Name (A - Z)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Actor Count Banner -->
+                <div class="flex items-center justify-between text-xs text-creamWhite/60 px-1">
+                    <span>Showing <strong id="visibleActorCount" class="text-amberGold">100</strong> Bengali TV Stars</span>
+                    <span id="activeFilterLabel" class="italic text-amberGold/80">Category: All Actors</span>
+                </div>
+
+                <!-- Actor Cards Grid -->
+                <div id="actorGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Cards will be dynamically rendered here via JS -->
+                </div>
+            </section>
+
+            <!-- SECTION 2: DREAM FEED -->
+            <section id="section-dreamfeed" class="hidden space-y-6">
+                <div class="glass-card rounded-2xl p-6 border border-amberGold/30">
+                    <h2 class="font-cinzel text-2xl font-bold gold-gradient-text mb-2">Filmy Dream Feed</h2>
+                    <p class="text-xs text-creamWhite/70 mb-4">Express your fandom, review recent dramas, and share thoughts about Bengal TV stars.</p>
+
+                    <!-- Post Creation Form -->
+                    <div class="bg-emeraldDark/80 p-4 rounded-xl border border-amberGold/20 space-y-3">
+                        <textarea id="postInput" rows="3" placeholder="Share your thoughts about your favorite Bengali drama actor or show..." class="w-full bg-emeraldDeep/80 border border-amberGold/30 rounded-lg p-3 text-xs text-creamWhite placeholder-creamWhite/40 focus:outline-none focus:border-amberGold resize-none"></textarea>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2 text-amberGold text-sm">
+                                <button class="hover:text-creamWhite transition-all" title="Attach Media"><i class="fa-solid fa-image"></i></button>
+                                <button class="hover:text-creamWhite transition-all" title="Add Rating Star"><i class="fa-solid fa-star"></i></button>
+                                <button class="hover:text-creamWhite transition-all" title="Tag Actor"><i class="fa-solid fa-at"></i></button>
+                            </div>
+                            <button onclick="publishDreamPost()" class="px-5 py-1.5 rounded-lg gold-gradient-bg text-emeraldDeep font-bold text-xs hover:opacity-90 transition-all shadow-md">
+                                Post Thought
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dream Feed Timeline -->
+                    <div id="dreamFeedTimeline" class="mt-6 space-y-4">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: FILMY LIVE STREAM -->
+            <section id="section-livestream" class="hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Live Video Player Simulator -->
+                    <div class="lg:col-span-2 glass-card rounded-2xl overflow-hidden border border-amberGold/30 flex flex-col">
+                        <div class="relative bg-black aspect-video flex items-center justify-center group">
+                            <!-- Simulated Video Canvas / Canvas Art -->
+                            <div class="absolute inset-0 bg-gradient-to-t from-emeraldDeep via-black/60 to-transparent z-10"></div>
+                            <img src="https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=1200&q=80" alt="Live TV Broadcast" class="w-full h-full object-cover opacity-60">
+                            
+                            <div class="absolute top-4 left-4 z-20 flex items-center gap-2">
+                                <span class="bg-red-600 text-white font-bold text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider live-pulse flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white"></span> LIVE
+                                </span>
+                                <span class="bg-emeraldDeep/80 backdrop-blur-md border border-amberGold/30 text-amberGold text-xs px-3 py-1 rounded-full font-semibold">
+                                    Special Media Roundtable: Modern Bengal TV Evolution
+                                </span>
+                            </div>
+
+                            <div class="absolute bottom-4 left-4 right-4 z-20 flex items-center justify-between text-xs">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-creamWhite/80"><i class="fa-solid fa-eye text-amberGold mr-1"></i> 24,890 Watching</span>
+                                    <span class="text-creamWhite/80"><i class="fa-solid fa-heart text-red-400 mr-1"></i> 142.5K Likes</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <button onclick="triggerStreamTipping()" class="px-3 py-1 rounded-full gold-gradient-bg text-emeraldDeep font-bold hover:scale-105 transition-all">
+                                        <i class="fa-solid fa-coins mr-1"></i> Tip Tokens
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-emeraldDark/90 flex items-center justify-between border-t border-amberGold/20">
+                            <div>
+                                <h3 class="font-cinzel text-lg font-bold text-amberGold">Exclusive Producer Talk: Telefilm Industry 2026</h3>
+                                <p class="text-xs text-creamWhite/60">Hosted by Amim Ahsan (Founder & Executive Producer)</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="addVirtualApplause()" class="p-2.5 rounded-full bg-emeraldDeep hover:bg-amberGold hover:text-emeraldDeep border border-amberGold/30 text-amberGold transition-all" title="Send Crown Reaction">
+                                    👑
+                                </button>
+                                <button onclick="addVirtualApplause()" class="p-2.5 rounded-full bg-emeraldDeep hover:bg-amberGold hover:text-emeraldDeep border border-amberGold/30 text-amberGold transition-all" title="Send Applause">
+                                    👏
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live Audience Chat Room -->
+                    <div class="glass-card rounded-2xl p-4 border border-amberGold/30 flex flex-col h-[480px]">
+                        <div class="flex items-center justify-between pb-3 border-b border-amberGold/20 mb-3">
+                            <h3 class="font-cinzel text-sm font-bold gold-gradient-text">Live Audience Chat</h3>
+                            <span class="text-[10px] text-emerald-400 font-mono"><i class="fa-solid fa-circle text-[8px] mr-1"></i>Connected</span>
+                        </div>
+
+                        <div id="liveChatMessages" class="flex-1 overflow-y-auto space-y-3 pr-2 text-xs">
+                            <!-- Streamed comments generated automatically -->
+                        </div>
+
+                        <div class="pt-3 border-t border-amberGold/20 flex gap-2">
+                            <input type="text" id="liveChatInput" placeholder="Send a live commentary..." class="flex-1 bg-emeraldDark border border-amberGold/30 rounded-lg px-3 py-1.5 text-xs text-creamWhite focus:outline-none focus:border-amberGold" onkeydown="if(event.key==='Enter') sendLiveChatMessage()">
+                            <button onclick="sendLiveChatMessage()" class="px-3 py-1.5 rounded-lg gold-gradient-bg text-emeraldDeep font-bold text-xs">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: EXECUTIVE HUB -->
+            <section id="section-executive" class="hidden space-y-6">
+                <!-- Founder Banner -->
+                <div class="glass-card rounded-2xl p-6 md:p-8 border border-amberGold/40 relative overflow-hidden">
+                    <div class="flex flex-col md:flex-row items-center gap-6">
+                        <div class="relative">
+                            <div class="w-24 h-24 md:w-32 md:h-32 rounded-full border-2 border-amberGold p-1 bg-emeraldDark">
+                                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Amim Ahsan" class="w-full h-full object-cover rounded-full">
+                            </div>
+                            <span class="absolute bottom-0 right-0 bg-amberGold text-emeraldDeep font-bold text-[10px] px-2 py-0.5 rounded-full border border-emeraldDeep">
+                                Founder
+                            </span>
+                        </div>
+                        <div class="space-y-2 text-center md:text-left">
+                            <span class="text-xs text-amberGold uppercase tracking-widest font-semibold">Executive Leadership</span>
+                            <h2 class="font-cinzel text-2xl md:text-3xl font-bold text-creamWhite">Amim Ahsan</h2>
+                            <p class="text-xs text-amberGold/90 font-medium">Founder & Executive Producer — Bengal TV Drama Network</p>
+                            <p class="text-xs text-creamWhite/70 max-w-2xl leading-relaxed">
+                                Overseeing talent syndication, cross-border broadcasting contracts between Dhaka & Kolkata media houses, and digital OTT distribution rights for over 100 Bengal TV actors.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Strategic Metrics Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="glass-card p-5 rounded-xl border border-amberGold/30">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-creamWhite/60 font-medium">Lead TV Contracts</span>
+                            <i class="fa-solid fa-file-contract text-amberGold"></i>
+                        </div>
+                        <div class="mt-3 font-cinzel text-2xl font-bold gold-gradient-text">100 / 100</div>
+                        <div class="mt-1 text-[11px] text-emerald-400">100% Retained Active Stars</div>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-xl border border-amberGold/30">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-creamWhite/60 font-medium">Ad & Broadcast Vol.</span>
+                            <i class="fa-solid fa-chart-line text-amberGold"></i>
+                        </div>
+                        <div class="mt-3 font-cinzel text-2xl font-bold gold-gradient-text">$8.4 Million</div>
+                        <div class="mt-1 text-[11px] text-emerald-400">+18.5% YoY Growth</div>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-xl border border-amberGold/30">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-creamWhite/60 font-medium">Active Viewers</span>
+                            <i class="fa-solid fa-tv text-amberGold"></i>
+                        </div>
+                        <div class="mt-3 font-cinzel text-2xl font-bold gold-gradient-text">12.8 Million</div>
+                        <div class="mt-1 text-[11px] text-emerald-400">Bangladesh & West Bengal</div>
+                    </div>
+
+                    <div class="glass-card p-5 rounded-xl border border-amberGold/30">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-creamWhite/60 font-medium">Partner Networks</span>
+                            <i class="fa-solid fa-network-wired text-amberGold"></i>
+                        </div>
+                        <div class="mt-3 font-cinzel text-2xl font-bold gold-gradient-text">14 Channels</div>
+                        <div class="mt-1 text-[11px] text-amberGold/80">Star Jalsha, Zee Bangla, NTV, Chorki</div>
+                    </div>
+                </div>
+
+                <!-- Executive Announcements Feed -->
+                <div class="glass-card p-6 rounded-2xl border border-amberGold/30">
+                    <h3 class="font-cinzel text-lg font-bold text-amberGold mb-4">Official Executive Directives & Approvals</h3>
+                    <div class="space-y-4">
+                        <div class="bg-emeraldDark/80 p-4 rounded-xl border-l-4 border-amberGold">
+                            <div class="flex justify-between items-center text-xs text-amberGold mb-1">
+                                <span class="font-bold">DHAKA - KOLKATA MEDIA SUMMIT 2026</span>
+                                <span>Oct 12, 2026</span>
+                            </div>
+                            <h4 class="text-sm font-semibold text-creamWhite">Approved Cross-Border Joint Telefilm Co-Productions</h4>
+                            <p class="text-xs text-creamWhite/70 mt-1">
+                                Signed official talent exchange protocol allowing top Stars like Ziaul Faruq Apurba and Yash Dasgupta to star in joint mega-dramas spanning both OTT platforms and satellite linear TV.
+                            </p>
+                        </div>
+
+                        <div class="bg-emeraldDark/80 p-4 rounded-xl border-l-4 border-amberGold">
+                            <div class="flex justify-between items-center text-xs text-amberGold mb-1">
+                                <span class="font-bold">ROYAL BENCHMARK STANDARD</span>
+                                <span>Sep 28, 2026</span>
+                            </div>
+                            <h4 class="text-sm font-semibold text-creamWhite">Digital Rights Protection & Royalty Framework</h4>
+                            <p class="text-xs text-creamWhite/70 mt-1">
+                                Executive office has deployed automated copyright tracking for all telefilms and serial episodes broadcasted on digital streams.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="mt-auto border-t border-amberGold/20 bg-emeraldDark/90 py-6 text-center text-xs text-creamWhite/60 space-y-2">
+            <p class="font-cinzel font-semibold text-amberGold">BENGAL 100 — MALE TV DRAMA STARS HAVEN</p>
+            <p>© 2026 Founder & Executive Producer: <strong class="text-creamWhite">Amim Ahsan</strong>. All Rights Reserved.</p>
+        </footer>
+    </div>
+
+    <!-- 5-TAB ACTOR PROFILE MODAL -->
+    <div id="actorModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+        <div class="glass-card w-full max-w-4xl max-h-[90vh] rounded-2xl border border-amberGold/40 flex flex-col overflow-hidden relative shadow-2xl">
+            
+            <!-- Modal Header -->
+            <div class="p-4 md:p-6 bg-emeraldDark border-b border-amberGold/30 flex items-start justify-between relative">
+                <div class="flex items-center gap-4">
+                    <img id="modalActorImg" src="" alt="" class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-2 border-amberGold">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h2 id="modalActorName" class="font-cinzel text-xl md:text-2xl font-bold text-creamWhite"></h2>
+                            <span id="modalActorBadge" class="px-2 py-0.5 rounded text-[10px] font-bold uppercase gold-gradient-bg text-emeraldDeep"></span>
+                        </div>
+                        <p id="modalActorTitle" class="text-xs text-amberGold font-medium mt-0.5"></p>
+                        <div class="flex items-center gap-3 text-xs text-creamWhite/70 mt-2">
+                            <span><i class="fa-solid fa-tv text-amberGold mr-1"></i><span id="modalSerialsCount"></span> Shows</span>
+                            <span><i class="fa-solid fa-heart text-amberGold mr-1"></i><span id="modalFansCount"></span> Followers</span>
+                            <span><i class="fa-solid fa-tower-broadcast text-amberGold mr-1"></i><span id="modalNetwork"></span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="closeActorModal()" class="w-8 h-8 rounded-full bg-emeraldDeep/80 hover:bg-amberGold hover:text-emeraldDeep border border-amberGold/40 text-creamWhite flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Modal Navigation Tabs -->
+            <div class="flex items-center gap-2 px-4 pt-3 bg-emeraldDeep/90 border-b border-amberGold/20 overflow-x-auto">
+                <button onclick="switchModalTab(1)" id="mtab-1" class="px-4 py-2 text-xs font-bold border-b-2 border-amberGold text-amberGold whitespace-nowrap">
+                    1. Executive Summary
+                </button>
+                <button onclick="switchModalTab(2)" id="mtab-2" class="px-4 py-2 text-xs font-bold border-b-2 border-transparent text-creamWhite/70 hover:text-amberGold whitespace-nowrap">
+                    2. Drama Wiki (5 Pages)
+                </button>
+                <button onclick="switchModalTab(3)" id="mtab-3" class="px-4 py-2 text-xs font-bold border-b-2 border-transparent text-creamWhite/70 hover:text-amberGold whitespace-nowrap">
+                    3. Photo Feature Gallery
+                </button>
+                <button onclick="switchModalTab(4)" id="mtab-4" class="px-4 py-2 text-xs font-bold border-b-2 border-transparent text-creamWhite/70 hover:text-amberGold whitespace-nowrap">
+                    4. Brand Deals & Commercials
+                </button>
+                <button onclick="switchModalTab(5)" id="mtab-5" class="px-4 py-2 text-xs font-bold border-b-2 border-transparent text-creamWhite/70 hover:text-amberGold whitespace-nowrap">
+                    5. Fan Reactions & Live Comments
+                </button>
+            </div>
+
+            <!-- Modal Content Panels Container -->
+            <div class="p-6 overflow-y-auto flex-1 text-xs space-y-4">
+                
+                <!-- TAB 1: BIOGRAPHY & SUMMARY -->
+                <div id="mpanel-1" class="space-y-4">
+                    <div class="bg-emeraldDark/60 p-4 rounded-xl border border-amberGold/20 space-y-2">
+                        <h3 class="font-cinzel text-sm font-bold text-amberGold">Biography & Career Trajectory</h3>
+                        <p id="modalBioText" class="text-creamWhite/80 leading-relaxed text-xs"></p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-emeraldDark/60 p-4 rounded-xl border border-amberGold/20">
+                            <h4 class="font-cinzel font-bold text-amberGold mb-2">Signature Acting Style</h4>
+                            <p id="modalStyleText" class="text-creamWhite/80"></p>
+                        </div>
+                        <div class="bg-emeraldDark/60 p-4 rounded-xl border border-amberGold/20">
+                            <h4 class="font-cinzel font-bold text-amberGold mb-2">Flagship/Leading Project</h4>
+                            <p id="modalFlagshipText" class="text-creamWhite/80 font-semibold"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: 5-PAGE DRAMA WIKI -->
+                <div id="mpanel-2" class="hidden space-y-4">
+                    <div class="flex items-center gap-2 border-b border-amberGold/20 pb-2">
+                        <button onclick="switchWikiSubpage(1)" id="wtab-1" class="px-3 py-1 rounded bg-amberGold text-emeraldDeep font-bold text-[11px]">Page 1: Debut Serials</button>
+                        <button onclick="switchWikiSubpage(2)" id="wtab-2" class="px-3 py-1 rounded bg-emeraldDark text-creamWhite/70 hover:text-amberGold text-[11px]">Page 2: Megahit TV Dramas</button>
+                        <button onclick="switchWikiSubpage(3)" id="wtab-3" class="px-3 py-1 rounded bg-emeraldDark text-creamWhite/70 hover:text-amberGold text-[11px]">Page 3: Iconic Characters</button>
+                        <button onclick="switchWikiSubpage(4)" id="wtab-4" class="px-3 py-1 rounded bg-emeraldDark text-creamWhite/70 hover:text-amberGold text-[11px]">Page 4: Telefilms & Awards</button>
+                        <button onclick="switchWikiSubpage(5)" id="wtab-5" class="px-3 py-1 rounded bg-emeraldDark text-creamWhite/70 hover:text-amberGold text-[11px]">Page 5: OTT Horizon</button>
+                    </div>
+
+                    <div id="wikiContent" class="bg-emeraldDark/80 p-4 rounded-xl border border-amberGold/20">
+                        <!-- Dynamic Wiki content inserted by JS -->
+                    </div>
+                </div>
+
+                <!-- TAB 3: PHOTO FEATURE GALLERY -->
+                <div id="mpanel-3" class="hidden">
+                    <div id="photoGalleryGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                        <!-- 5 expandable gallery photos -->
+                    </div>
+                </div>
+
+                <!-- TAB 4: BRAND DEALS & COMMERCIALS -->
+                <div id="mpanel-4" class="hidden space-y-3">
+                    <h3 class="font-cinzel text-sm font-bold text-amberGold">Commercial Endorsements & Brand Portfolio</h3>
+                    <div id="brandDealsList" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Dynamic Brand items -->
+                    </div>
+                </div>
+
+                <!-- TAB 5: FAN REACTION & COMMENTS -->
+                <div id="mpanel-5" class="hidden space-y-4">
+                    <!-- Non-Heart Reaction Badges -->
+                    <div class="bg-emeraldDark/80 p-4 rounded-xl border border-amberGold/30 space-y-3">
+                        <h4 class="font-cinzel font-bold text-amberGold">Express Royal Fan Tribute</h4>
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="addReaction('crown')" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-emeraldDeep border border-amberGold/30 hover:border-amberGold transition-all">
+                                <span>✨ Royal Crown</span>
+                                <span id="react-crown" class="font-bold text-amberGold">1,240</span>
+                            </button>
+                            <button onclick="addReaction('star')" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-emeraldDeep border border-amberGold/30 hover:border-amberGold transition-all">
+                                <span>🌟 Starlight</span>
+                                <span id="react-star" class="font-bold text-amberGold">890</span>
+                            </button>
+                            <button onclick="addReaction('aura')" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-emeraldDeep border border-amberGold/30 hover:border-amberGold transition-all">
+                                <span>💫 Mystic Aura</span>
+                                <span id="react-aura" class="font-bold text-amberGold">650</span>
+                            </button>
+                            <button onclick="addReaction('power')" class="flex items-center gap-2 px-3 py-2 rounded-lg bg-emeraldDeep border border-amberGold/30 hover:border-amberGold transition-all">
+                                <span>🔥 Dramatic Power</span>
+                                <span id="react-power" class="font-bold text-amberGold">2,100</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Persistent Local Storage Comments -->
+                    <div class="space-y-3">
+                        <h4 class="font-cinzel font-bold text-creamWhite">Fan Discussion Board</h4>
+                        <div class="flex gap-2">
+                            <input type="text" id="fanCommentInput" placeholder="Write a message for this actor..." class="flex-1 bg-emeraldDark border border-amberGold/30 rounded-lg px-3 py-2 text-xs text-creamWhite focus:outline-none focus:border-amberGold">
+                            <button onclick="submitFanComment()" class="px-4 py-2 rounded-lg gold-gradient-bg text-emeraldDeep font-bold text-xs">
+                                Post Comment
+                            </button>
+                        </div>
+                        <div id="fanCommentsList" class="space-y-2 max-h-48 overflow-y-auto pr-2">
+                            <!-- Comments loaded here -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- DIRECT MESSAGE SIMULATOR MODAL -->
+    <div id="dmModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-md rounded-2xl border border-amberGold/40 p-5 space-y-4">
+            <div class="flex justify-between items-center border-b border-amberGold/20 pb-3">
+                <h3 class="font-cinzel text-sm font-bold text-amberGold" id="dmModalTitle">Direct Message</h3>
+                <button onclick="closeDmModal()" class="text-creamWhite/60 hover:text-amberGold"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="text-xs text-creamWhite/70">Send a direct message or talent inquiry to actor manager network.</p>
+            <textarea id="dmTextInput" rows="4" placeholder="Type your message..." class="w-full bg-emeraldDark border border-amberGold/30 rounded-lg p-3 text-xs text-creamWhite focus:outline-none focus:border-amberGold resize-none"></textarea>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeDmModal()" class="px-4 py-1.5 rounded-lg border border-amberGold/30 text-xs">Cancel</button>
+                <button onclick="sendDirectMessage()" class="px-4 py-1.5 rounded-lg gold-gradient-bg text-emeraldDeep font-bold text-xs">Send Message</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SOURCE CODE EXPORTER MODAL -->
+    <div id="exporterModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-3xl rounded-2xl border border-amberGold/40 p-6 space-y-4 flex flex-col max-h-[85vh]">
+            <div class="flex justify-between items-center border-b border-amberGold/20 pb-3">
+                <h3 class="font-cinzel text-base font-bold gold-gradient-text">Source Code Exporter</h3>
+                <button onclick="closeExporterModal()" class="text-creamWhite/60 hover:text-amberGold"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <p class="text-xs text-creamWhite/70">
+                You can download the entire self-contained application as a single HTML file: <code class="text-amberGold font-mono">bengal_100_tv_actors.html</code>.
+            </p>
+            <textarea id="sourceCodeViewer" readonly class="w-full flex-1 bg-black/80 border border-amberGold/30 rounded-lg p-3 text-[11px] font-mono text-amberGold/90 resize-none overflow-y-auto focus:outline-none">
+<!-- Full HTML File Code Exporter -->
+            </textarea>
+            <div class="flex justify-between items-center pt-2">
+                <button onclick="copySourceCode()" class="px-4 py-2 rounded-lg bg-emeraldDark hover:bg-emeraldDeep border border-amberGold/30 text-amberGold font-semibold text-xs transition-all">
+                    <i class="fa-solid fa-copy mr-1"></i> Copy Code to Clipboard
+                </button>
+                <button onclick="downloadSourceCode()" class="px-5 py-2 rounded-lg gold-gradient-bg text-emeraldDeep font-bold text-xs transition-all shadow-lg">
+                    <i class="fa-solid fa-download mr-1"></i> Download File (.html)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 hidden bg-amberGold text-emeraldDeep font-bold px-4 py-2.5 rounded-xl shadow-2xl text-xs flex items-center gap-2 border border-white/20 transition-all">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toastMsg">Action completed!</span>
+    </div>
+
+    <script>
+        // CANVAS SPARKLE BACKGROUND ANIMATION
+        const canvas = document.getElementById('sparkleCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedY = Math.random() * 0.3 + 0.1;
+                this.alpha = Math.random() * 0.8 + 0.2;
+                this.fade = Math.random() * 0.008 + 0.003;
+            }
+            update() {
+                this.y -= this.speedY;
+                this.alpha -= this.fade;
+                if (this.alpha <= 0 || this.y < 0) {
+                    this.reset();
+                    this.y = canvas.height + 10;
+                }
+            }
+            draw() {
+                ctx.fillStyle = `rgba(229, 169, 60, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 60; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateSparkles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animateSparkles);
+        }
+        animateSparkles();
+
+        // COMPREHENSIVE 100 MALE BENGAL TV ACTORS DATABASE
+        const actorsData = [
+            { id: 1, name: "Mosharraf Karim", cat: "bd", era: "Bangladesh Legend", serials: 320, followers: "4.8M", network: "NTV / Channel i / BTV", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80", title: "Versatile Comedy & Drama Mastermind" },
+            { id: 2, name: "Chanchal Chowdhury", cat: "bd", era: "Bangladesh Legend", serials: 280, followers: "5.2M", network: "BTV / Chorki / NTV", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80", title: "National Awardee & Character Icon" },
+            { id: 3, name: "Ziaul Faruq Apurba", cat: "bd", era: "OTT & Megaserial Idols", serials: 410, followers: "4.2M", network: "NTV / RTV / Channel i", image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=400&q=80", title: "King of Bengal Romance" },
+            { id: 4, name: "Afran Nisho", cat: "bd", era: "OTT & Megaserial Idols", serials: 350, followers: "4.9M", network: "Chorki / Hoichoi / NTV", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80", title: "Intense Character Virtuoso" },
+            { id: 5, name: "Ziaul Hoque Polash", cat: "bd", era: "OTT & Megaserial Idols", serials: 140, followers: "3.6M", network: "Channel i / YouTube", image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80", title: "Kabila Iconic Comedy Sensation" },
+            { id: 6, name: "Tahsan Khan", cat: "bd", era: "Golden Era Classics", serials: 180, followers: "3.9M", network: "NTV / BTV / Banglavision", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80", title: "Melody & Romantic Telefilm Icon" },
+            { id: 7, name: "Farhan Ahmed Jovan", cat: "bd", era: "OTT & Megaserial Idols", serials: 230, followers: "2.8M", network: "NTV / RTV", image: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=400&q=80", title: "Youth Drama Sensation" },
+            { id: 8, name: "Towsif Mahbub", cat: "bd", era: "OTT & Megaserial Idols", serials: 210, followers: "2.5M", network: "NTV / Channel i", image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80", title: "Contemporary Telefilm Heartthrob" },
+            { id: 9, name: "Yash Dasgupta", cat: "kolkata", era: "Kolkata TV Serial Leads", serials: 110, followers: "3.1M", network: "Star Jalsha", image: "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=400&q=80", title: "Bojhena Se Bojhena Superstar" },
+            { id: 10, name: "Vikram Chatterjee", cat: "kolkata", era: "Kolkata TV Serial Leads", serials: 150, followers: "2.2M", network: "Zee Bangla / Star Jalsha", image: "https://images.unsplash.com/photo-1480429370139-e0132c086e2a?auto=format&fit=crop&w=400&q=80", title: "Ichche Nodee Lead Icon" },
+            { id: 11, name: "Sean Banerjee", cat: "kolkata", era: "Kolkata TV Serial Leads", serials: 95, followers: "1.9M", network: "Star Jalsha", image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80", title: "Mon Phagun Lead Heartthrob" },
+            { id: 12, name: "Gourab Chatterjee", cat: "kolkata", era: "Kolkata TV Serial Leads", serials: 190, followers: "1.8M", network: "Zee Bangla", image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80", title: "Rani Rashmoni Prime Lead" },
+            { id: 13, name: "Honey Bafna", cat: "kolkata", era: "Kolkata TV Serial Leads", serials: 130, followers: "1.4M", network: "Zee Bangla", image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80", title: "Bokul Katha Virtuoso" },
+            { id: 14, name: "Rishi Kaushik", cat: "kolkata", era: "Golden Era Classics", serials: 220, followers: "2.0M", network: "Star Jalsha", image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=400&q=80", title: "Ishti Kutum Legend" },
+            { id: 15, name: "Rezwan Rabbani Sheikh", cat: "kolkata", era: "Kolkata TV Serial Leads", serials: 140, followers: "1.6M", network: "Star Jalsha", image: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=400&q=80", title: "Sanjher Baati Lead Actor" },
+            { id: 16, name: "Neel Bhattacharya", cat: "kolkata", era: "Kolkata TV Serial Leads", serials: 160, followers: "2.4M", network: "Zee Bangla", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80", title: "Krishnakoli Lead Star" },
+            { id: 17, name: "Jeetu Kamal", cat: "kolkata", era: "Kolkata TV Serial Leads", serials: 125, followers: "2.1M", network: "Zee Bangla", image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80", title: "Aparajita Apu Superstar" },
+            { id: 18, name: "Dibyojyoti Dutta", cat: "kolkata", era: "Kolkata TV Serial Leads", serials: 85, followers: "1.7M", network: "Star Jalsha", image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80", title: "Anurager Chhowa Idol" },
+            { id: 19, name: "Syed Arefin", cat: "kolkata", era: "Kolkata TV Serial Leads", serials: 90, followers: "1.3M", network: "Zee Bangla", image: "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=400&q=80", title: "Khela Ghar Leading Man" },
+            { id: 20, name: "Sabyasachi Chowdhury", cat: "kolkata", era: "Golden Era Classics", serials: 105, followers: "1.8M", network: "Star Jalsha", image: "https://images.unsplash.com/photo-1480429370139-e0132c086e2a?auto=format&fit=crop&w=400&q=80", title: "Mahapeeth Tarapeeth Legend" }
+        ];
+
+        // Generate remaining 80 authentic-style actor profiles to complete the 100 roster
+        const additionalNames = [
+            "Zahid Hasan", "Tariq Anam Khan", "Apurba Roy", "Siddiqur Rahman", "Shajal Noor",
+            "Manoj Pramanik", "Khairul Basar", "Yash Rohan", "Shashwta Datta", "Arosh Khan",
+            "Niloy Alamgir", "Shamim Hasan Sarkar", "Chashi Alam", "Jiaul Haque Baten", "Tamim Mridha",
+            "FS Nayeem", "Irfan Sajjad", "Rawnak Hasan", "Fazlur Rahman Babu", "Shatoabdi Wadud",
+            "Gazi Rakayet", "Abul Hayat", "Tariq Swapan", "Dilara Zaman", "Majnun Miji",
+            "Marzuk Russell", "Anwar Hossain", "Siam Ahmed", "Shakib Khan", "Arifin Shuvoo",
+            "Prasun Banerjee", "Ferdous Ahmed", "Riaz Uddin Ahamed", "Mahfuz Ahmed", "Noble",
+            "Mir Sabbir", "Shahriar Nazim Joy", "Kazi Hayat", "Litu Anam", "Tony Dias",
+            "Azizul Hakim", "Hillol", "Intekhab Dinar", "Subhasish Mukhopadhyay", "Kharaj Mukherjee",
+            "Sabyasachi Chakrabarty", "Tota Roy Chowdhury", "Saswata Chatterjee", "Anirban Bhattacharya", "Parambrata Chatterjee",
+            "Abir Chatterjee", "Jisshu Sengupta", "Rwitobroto Mukherjee", "Riddhi Sen", "Suprotim Ghoshal",
+            "Rohan Bhattacharya", "Pratik Sen", "Indrasish Roy", "Fahim Islam", "Adrit Roy",
+            "Rubel Das", "Krushal Ahuja", "Biswarup Bandyopadhyay", "Somraj Maity", "Suman Dey",
+            "Gourab Roy Chowdhury", "Mainak Banerjee", "Ravi Shaw", "Anindya Chatterjee", "Sujan Mukhopadhyay",
+            "Bhaswar Chatterjee", "Sudip Mukherjee", "Kaushik Sen", "Chandan Sen", "Debranjan Nag",
+            "Rajesh Sharma", "Koushik Roy", "Joey Debroy", "Rahul Banerjee", "Soumitra Chatterjee"
+        ];
+
+        additionalNames.forEach((name, idx) => {
+            const isBd = idx % 2 === 0;
+            actorsData.push({
+                id: 21 + idx,
+                name: name,
+                cat: isBd ? (idx % 4 === 0 ? "golden" : "bd") : (idx % 3 === 0 ? "ott" : "kolkata"),
+                era: isBd ? "Bangladesh Stars" : "Kolkata Stars",
+                serials: Math.floor(Math.random() * 200) + 50,
+                followers: (Math.random() * 3 + 1).toFixed(1) + "M",
+                network: isBd ? "BTV / NTV / Chorki" : "Zee Bangla / Star Jalsha",
+                image: `https://images.unsplash.com/photo-${1500000000000 + (idx * 12345) % 1000000}?auto=format&fit=crop&w=400&q=80`,
+                title: `${name} — Premium Bengal TV Talent`
+            });
+        });
+
+        // Fallback images if image fails
+        const fallbackImg = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80";
+
+        let currentCategory = 'all';
+        let currentSort = 'pop';
+        let currentActor = null;
+
+        // RENDER ACTORS GRID
+        function renderActors() {
+            const grid = document.getElementById('actorGrid');
+            grid.innerHTML = '';
+
+            let filtered = actorsData.filter(a => {
+                if (currentCategory === 'all') return true;
+                if (currentCategory === 'bd') return a.cat === 'bd';
+                if (currentCategory === 'kolkata') return a.cat === 'kolkata';
+                if (currentCategory === 'golden') return a.cat === 'golden';
+                if (currentCategory === 'ott') return a.cat === 'ott';
+                return true;
+            });
+
+            // Sorting logic
+            if (currentSort === 'pop') {
+                filtered.sort((a, b) => parseFloat(b.followers) - parseFloat(a.followers));
+            } else if (currentSort === 'serials') {
+                filtered.sort((a, b) => b.serials - a.serials);
+            } else if (currentSort === 'fans') {
+                filtered.sort((a, b) => parseFloat(b.followers) - parseFloat(a.followers));
+            } else if (currentSort === 'name') {
+                filtered.sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            document.getElementById('visibleActorCount').innerText = filtered.length;
+
+            filtered.forEach(actor => {
+                const card = document.createElement('div');
+                card.className = "glass-card glass-card-hover rounded-2xl overflow-hidden flex flex-col p-4 relative group border border-amberGold/20";
+                card.innerHTML = `
+                    <div class="relative w-full aspect-square rounded-xl overflow-hidden mb-3 bg-emeraldDark">
+                        <img src="${actor.image}" onerror="this.src='${fallbackImg}'" alt="${actor.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-2 left-2 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emeraldDeep/90 backdrop-blur-md text-amberGold border border-amberGold/30">
+                            ${actor.era}
+                        </span>
+                        <button onclick="event.stopPropagation(); triggerPoke('${actor.name}')" class="absolute bottom-2 right-2 w-8 h-8 rounded-full gold-gradient-bg text-emeraldDeep font-bold flex items-center justify-center shadow-lg hover:scale-110 transition-transform" title="Poke Actor">
+                            👉
+                        </button>
+                    </div>
+
+                    <div class="flex-1 flex flex-col justify-between space-y-2">
+                        <div>
+                            <h3 class="font-cinzel text-base font-bold text-creamWhite group-hover:text-amberGold transition-colors">${actor.name}</h3>
+                            <p class="text-[11px] text-amberGold/80 line-clamp-1 font-medium">${actor.title}</p>
+                        </div>
+
+                        <div class="text-[11px] text-creamWhite/60 space-y-1 border-t border-amberGold/10 pt-2">
+                            <div class="flex justify-between">
+                                <span>Network:</span>
+                                <span class="font-semibold text-creamWhite">${actor.network}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Serials & Telefilms:</span>
+                                <span class="font-semibold text-amberGold">${actor.serials}+</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Fan Followers:</span>
+                                <span class="font-semibold text-emerald-400">${actor.followers}</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 pt-2">
+                            <button onclick="openActorModal(${actor.id})" class="w-full py-1.5 rounded-lg gold-gradient-bg text-emeraldDeep font-bold text-xs hover:opacity-90 transition-all shadow">
+                                View Profile
+                            </button>
+                            <button onclick="openDmModal('${actor.name}')" class="w-full py-1.5 rounded-lg bg-emeraldDark hover:bg-emeraldDeep border border-amberGold/30 text-amberGold text-xs font-semibold transition-all">
+                                <i class="fa-solid fa-paper-plane mr-1"></i> DM
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // CATEGORY & SEARCH HANDLERS
+        function filterCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.className = "filter-btn px-3 py-1.5 rounded-lg text-xs font-medium text-creamWhite/80 hover:bg-emeraldDark transition-all whitespace-nowrap";
+            });
+            document.getElementById(`filter-${cat}`).className = "filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-amberGold text-emeraldDeep transition-all whitespace-nowrap";
+            
+            const labels = {
+                all: "All Actors",
+                bd: "Bangladesh Drama Stars",
+                kolkata: "Kolkata TV Serial Leads",
+                golden: "Golden Era Classics",
+                ott: "OTT & Megaserial Idols"
+            };
+            document.getElementById('activeFilterLabel').innerText = `Category: ${labels[cat]}`;
+            renderActors();
+        }
+
+        function handleSort() {
+            currentSort = document.getElementById('sortSelect').value;
+            renderActors();
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('globalSearchInput').value.toLowerCase();
+            const grid = document.getElementById('actorGrid');
+            const cards = grid.children;
+
+            let visibleCount = 0;
+            Array.from(cards).forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = "flex";
+                    visibleCount++;
+                } else {
+                    card.style.display = "none";
+                }
+            });
+            document.getElementById('visibleActorCount').innerText = visibleCount;
+        }
+
+        // MAIN NAVIGATION TABS
+        function switchMainTab(tab) {
+            document.getElementById('section-directory').classList.add('hidden');
+            document.getElementById('section-dreamfeed').classList.add('hidden');
+            document.getElementById('section-livestream').classList.add('hidden');
+            document.getElementById('section-executive').classList.add('hidden');
+
+            document.getElementById(`nav-directory`).className = "px-4 py-2 rounded-full text-xs md:text-sm font-semibold text-creamWhite/80 hover:text-amberGold transition-all";
+            document.getElementById(`nav-dreamfeed`).className = "px-4 py-2 rounded-full text-xs md:text-sm font-semibold text-creamWhite/80 hover:text-amberGold transition-all";
+            document.getElementById(`nav-livestream`).className = "px-4 py-2 rounded-full text-xs md:text-sm font-semibold text-creamWhite/80 hover:text-amberGold transition-all";
+            document.getElementById(`nav-executive`).className = "px-4 py-2 rounded-full text-xs md:text-sm font-semibold text-creamWhite/80 hover:text-amberGold transition-all";
+
+            document.getElementById(`section-${tab}`).classList.remove('hidden');
+            document.getElementById(`nav-${tab}`).className = "px-4 py-2 rounded-full text-xs md:text-sm font-semibold transition-all tab-active";
+        }
+
+        // ACTOR MODAL & 5 TABS
+        function openActorModal(actorId) {
+            currentActor = actorsData.find(a => a.id === actorId);
+            if (!currentActor) return;
+
+            document.getElementById('modalActorImg').src = currentActor.image;
+            document.getElementById('modalActorName').innerText = currentActor.name;
+            document.getElementById('modalActorBadge').innerText = currentActor.era;
+            document.getElementById('modalActorTitle').innerText = currentActor.title;
+            document.getElementById('modalSerialsCount').innerText = currentActor.serials;
+            document.getElementById('modalFansCount').innerText = currentActor.followers;
+            document.getElementById('modalNetwork').innerText = currentActor.network;
+
+            document.getElementById('modalBioText').innerText = `${currentActor.name} is a celebrated icon in Bengal television history. Known for versatile performances across high-rating linear TV serials and digital telefilms, ${currentActor.name} has garnered acclaim across millions of Bengali viewers globally.`;
+            document.getElementById('modalStyleText').innerText = "Dynamic emotion delivery, authentic dialogue improvisation, and commanding screen presence.";
+            document.getElementById('modalFlagshipText').innerText = `${currentActor.name}'s highest rated prime-time drama series broadcasted across Bangladesh and West Bengal networks.`;
+
+            loadWikiSubpage(1);
+            loadGalleryPhotos();
+            loadBrandDeals();
+            loadFanComments();
+
+            switchModalTab(1);
+            document.getElementById('actorModal').classList.remove('hidden');
+        }
+
+        function closeActorModal() {
+            document.getElementById('actorModal').classList.add('hidden');
+        }
+
+        function switchModalTab(tabNum) {
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`mpanel-${i}`).classList.add('hidden');
+                document.getElementById(`mtab-${i}`).className = "px-4 py-2 text-xs font-bold border-b-2 border-transparent text-creamWhite/70 hover:text-amberGold whitespace-nowrap";
+            }
+            document.getElementById(`mpanel-${tabNum}`).classList.remove('hidden');
+            document.getElementById(`mtab-${tabNum}`).className = "px-4 py-2 text-xs font-bold border-b-2 border-amberGold text-amberGold whitespace-nowrap";
+        }
+
+        // WIKI SUBPAGES (5 PAGES)
+        function switchWikiSubpage(pageNum) {
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`wtab-${i}`).className = "px-3 py-1 rounded bg-emeraldDark text-creamWhite/70 hover:text-amberGold text-[11px]";
+            }
+            document.getElementById(`wtab-${pageNum}`).className = "px-3 py-1 rounded bg-amberGold text-emeraldDeep font-bold text-[11px]";
+            loadWikiSubpage(pageNum);
+        }
+
+        function loadWikiSubpage(page) {
+            const wikiBox = document.getElementById('wikiContent');
+            const actorName = currentActor ? currentActor.name : "Actor";
+            
+            const wikiPages = {
+                1: `
+                    <h4 class="font-cinzel text-amberGold font-bold mb-2">Page 1: Debut Serials & Early Breakthrough</h4>
+                    <p class="text-creamWhite/80 leading-relaxed mb-3">Started career on BTV and early satellite TV channels. Recognized immediately for effortless acting talent and emotional depth.</p>
+                    <ul class="list-disc list-inside space-y-1 text-amberGold/90">
+                        <li>Debut Telefilm: "First Light of Spring" (2008)</li>
+                        <li>Breakthrough TV Serial: "Aaloy Bhorano" (Episode 1-150)</li>
+                    </ul>
+                `,
+                2: `
+                    <h4 class="font-cinzel text-amberGold font-bold mb-2">Page 2: Megahit TV Dramas & Prime-time Dominance</h4>
+                    <p class="text-creamWhite/80 leading-relaxed mb-3">Headlined high-TRP prime time serials on Star Jalsha and Zee Bangla, consistently breaking viewership records across Bengal.</p>
+                    <ul class="list-disc list-inside space-y-1 text-amberGold/90">
+                        <li>"Khela Ghar Prime" (350+ Episodes)</li>
+                        <li>"Shonar Horin" (Blockbuster Megaserial)</li>
+                    </ul>
+                `,
+                3: `
+                    <h4 class="font-cinzel text-amberGold font-bold mb-2">Page 3: Iconic Character Roles</h4>
+                    <p class="text-creamWhite/80 leading-relaxed mb-3">Famous for portraying complex anti-heroes, romantic protagonists, and cultural folklore legends.</p>
+                    <div class="bg-emeraldDeep p-3 rounded-lg border border-amberGold/20 mt-2">
+                        <strong class="text-amberGold">Signature Role:</strong> Mastermind Protagonist in "The Royal Telefilm Arc".
+                    </div>
+                `,
+                4: `
+                    <h4 class="font-cinzel text-amberGold font-bold mb-2">Page 4: Award-Winning Telefilms & Critics' Choice</h4>
+                    <p class="text-creamWhite/80 leading-relaxed mb-3">Recipient of multiple Meril-Prothom Alo Awards and Zee Bangla Telefilm Honors for Best Lead Actor.</p>
+                    <span class="inline-block px-2 py-1 bg-amberGold/20 text-amberGold rounded border border-amberGold/30">🏆 Best Actor Telefilm Excellence 2024</span>
+                `,
+                5: `
+                    <h4 class="font-cinzel text-amberGold font-bold mb-2">Page 5: OTT Horizon & Future Projects</h4>
+                    <p class="text-creamWhite/80 leading-relaxed mb-3">Transitioning into high-budget OTT original series for Chorki, Hoichoi, and international digital streams.</p>
+                    <p class="text-emerald-400 font-semibold">Upcoming 2026 Release: "Bengal Express Syndicate" (8-Part Thriller)</p>
+                `
+            };
+            wikiBox.innerHTML = wikiPages[page];
+        }
+
+        function loadGalleryPhotos() {
+            const gallery = document.getElementById('photoGalleryGrid');
+            gallery.innerHTML = '';
+            for (let i = 1; i <= 5; i++) {
+                const imgUrl = `https://images.unsplash.com/photo-${1500000000000 + i * 98765}?auto=format&fit=crop&w=500&q=80`;
+                gallery.innerHTML += `
+                    <div class="relative group aspect-square bg-emeraldDark rounded-lg overflow-hidden border border-amberGold/30">
+                        <img src="${imgUrl}" onerror="this.src='${fallbackImg}'" class="w-full h-full object-cover group-hover:scale-110 transition-transform">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-amberGold text-xs font-bold">
+                            Photo #${i}
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function loadBrandDeals() {
+            const brandBox = document.getElementById('brandDealsList');
+            brandBox.innerHTML = `
+                <div class="bg-emeraldDark/80 p-3 rounded-lg border border-amberGold/20 flex items-center gap-3">
+                    <i class="fa-solid fa-shirt text-amberGold text-lg"></i>
+                    <div>
+                        <strong class="text-creamWhite">Royal Panjabi Fashion</strong>
+                        <p class="text-[10px] text-creamWhite/60">Brand Ambassador — Festive TVC 2026</p>
+                    </div>
+                </div>
+                <div class="bg-emeraldDark/80 p-3 rounded-lg border border-amberGold/20 flex items-center gap-3">
+                    <i class="fa-solid fa-mobile-screen text-amberGold text-lg"></i>
+                    <div>
+                        <strong class="text-creamWhite">Aura Smartphone Series</strong>
+                        <p class="text-[10px] text-creamWhite/60">Commercial Endorser</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // FAN COMMENTS & LOCALSTORAGE PERSISTENCE
+        function loadFanComments() {
+            const list = document.getElementById('fanCommentsList');
+            const key = `comments_${currentActor ? currentActor.id : 'default'}`;
+            const stored = JSON.parse(localStorage.getItem(key) || "[]");
+
+            if (stored.length === 0) {
+                list.innerHTML = `<p class="text-creamWhite/40 italic text-[11px]">No comments yet. Be the first royal fan to comment!</p>`;
+                return;
+            }
+
+            list.innerHTML = stored.map(c => `
+                <div class="bg-emeraldDark/90 p-2.5 rounded-lg border border-amberGold/10 space-y-1">
+                    <div class="flex justify-between items-center text-[10px] text-amberGold">
+                        <span class="font-bold">${c.user}</span>
+                        <span>${c.date}</span>
+                    </div>
+                    <p class="text-creamWhite/80 text-xs">${c.text}</p>
+                </div>
+            `).join('');
+        }
+
+        function submitFanComment() {
+            const input = document.getElementById('fanCommentInput');
+            if (!input.value.trim()) return;
+
+            const key = `comments_${currentActor ? currentActor.id : 'default'}`;
+            const stored = JSON.parse(localStorage.getItem(key) || "[]");
+            stored.unshift({
+                user: "Royal Fan",
+                date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                text: input.value
+            });
+
+            localStorage.setItem(key, JSON.stringify(stored));
+            input.value = '';
+            loadFanComments();
+            showToast("Your tribute comment has been posted!");
+        }
+
+        function addReaction(type) {
+            const elem = document.getElementById(`react-${type}`);
+            let val = parseInt(elem.innerText.replace(',', '')) + 1;
+            elem.innerText = val.toLocaleString();
+            showToast("Reaction sent to actor network!");
+        }
+
+        // DREAM FEED POSTS
+        const dreamPosts = [
+            { user: "Tanvir Ahmed", actor: "Mosharraf Karim", time: "10 mins ago", text: "Mosharraf Karim's performance in the latest Eid telefilm is pure gold! Nobody handles emotional comedy quite like him.", likes: 342 },
+            { user: "Priya Roy", actor: "Yash Dasgupta", time: "1 hour ago", text: "Rewatching Bojhena Se Bojhena again! Aranya Singha Roy remains the greatest lead character in Kolkata TV history.", likes: 512 }
+        ];
+
+        function renderDreamFeed() {
+            const timeline = document.getElementById('dreamFeedTimeline');
+            timeline.innerHTML = dreamPosts.map(p => `
+                <div class="bg-emeraldDark/80 p-4 rounded-xl border border-amberGold/20 space-y-2">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-bold text-amberGold">${p.user} <span class="text-creamWhite/50 font-normal">recommending</span> ${p.actor}</span>
+                        <span class="text-creamWhite/40 text-[10px]">${p.time}</span>
+                    </div>
+                    <p class="text-xs text-creamWhite/80 leading-relaxed">${p.text}</p>
+                    <div class="flex items-center gap-4 text-xs text-amberGold/80 pt-1 border-t border-amberGold/10">
+                        <button onclick="this.classList.add('text-red-400')" class="hover:text-creamWhite"><i class="fa-solid fa-heart mr-1"></i> ${p.likes}</button>
+                        <button class="hover:text-creamWhite"><i class="fa-solid fa-comment mr-1"></i> Reply</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function publishDreamPost() {
+            const input = document.getElementById('postInput');
+            if (!input.value.trim()) return;
+            dreamPosts.unshift({
+                user: "You (Royal Fan)",
+                actor: "Bengal TV Star",
+                time: "Just now",
+                text: input.value,
+                likes: 1
+            });
+            input.value = '';
+            renderDreamFeed();
+            showToast("Dream Feed post published!");
+        }
+
+        // FILMY LIVE STREAM SIMULATION
+        const liveComments = [
+            { user: "Rohan_Dhaka", text: "Greetings to Executive Producer Amim Ahsan!" },
+            { user: "Sneha_Kolkata", text: "Bengal television production quality is top tier in 2026!" },
+            { user: "Arafat_NTV", text: "Apurba & Nisho both deserve jointLifetime Awards." }
+        ];
+
+        function renderLiveChat() {
+            const box = document.getElementById('liveChatMessages');
+            box.innerHTML = liveComments.map(c => `
+                <div class="bg-emeraldDeep/80 p-2 rounded-lg border border-amberGold/10">
+                    <span class="font-bold text-amberGold">${c.user}: </span>
+                    <span class="text-creamWhite/80">${c.text}</span>
+                </div>
+            `).join('');
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function sendLiveChatMessage() {
+            const input = document.getElementById('liveChatInput');
+            if (!input.value.trim()) return;
+            liveComments.push({ user: "You", text: input.value });
+            input.value = '';
+            renderLiveChat();
+        }
+
+        function triggerStreamTipping() {
+            showToast("Tipped 500 Royal Gold Tokens to Stream!");
+        }
+
+        function addVirtualApplause() {
+            showToast("Crown applause sent live!");
+        }
+
+        // POKE & DM MODAL LOGIC
+        function triggerPoke(actorName) {
+            showToast(`You poked ${actorName}! 👉`);
+        }
+
+        function openDmModal(actorName) {
+            document.getElementById('dmModalTitle').innerText = `Direct Message — ${actorName}`;
+            document.getElementById('dmModal').classList.remove('hidden');
+        }
+
+        function closeDmModal() {
+            document.getElementById('dmModal').classList.add('hidden');
+        }
+
+        function sendDirectMessage() {
+            const text = document.getElementById('dmTextInput').value;
+            if (!text.value && text.trim().length === 0) return;
+            document.getElementById('dmTextInput').value = '';
+            closeDmModal();
+            showToast("Direct message sent to actor network!");
+        }
+
+        // EXPORTER MODAL LOGIC
+        function openExporterModal() {
+            const htmlContent = document.documentElement.outerHTML;
+            document.getElementById('sourceCodeViewer').value = htmlContent;
+            document.getElementById('exporterModal').classList.remove('hidden');
+        }
+
+        function closeExporterModal() {
+            document.getElementById('exporterModal').classList.add('hidden');
+        }
+
+        function copySourceCode() {
+            const codeArea = document.getElementById('sourceCodeViewer');
+            codeArea.select();
+            document.execCommand('copy');
+            showToast("Source code copied to clipboard!");
+        }
+
+        function downloadSourceCode() {
+            const code = document.documentElement.outerHTML;
+            const blob = new Blob([code], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'bengal_100_tv_actors.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast("Downloaded bengal_100_tv_actors.html!");
+        }
+
+        // TOAST NOTIFICATION UTILITY
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        // INIT APPLICATION
+        window.onload = function() {
+            renderActors();
+            renderDreamFeed();
+            renderLiveChat();
+
+            // Auto simulated live chat comments
+            setInterval(() => {
+                const sampleUsers = ["Oishi_Kolkata", "Farhan_Sylhet", "BengalMediaFan", "Niloy_Chittagong"];
+                const sampleTexts = ["Watching from Dhaka!", "Awesome session!", "Bengal TV lead actors are the best.", "Loving this live stream!"];
+                const randomU = sampleUsers[Math.floor(Math.random() * sampleUsers.length)];
+                const randomT = sampleTexts[Math.floor(Math.random() * sampleTexts.length)];
+                liveComments.push({ user: randomU, text: randomT });
+                if (liveComments.length > 20) liveComments.shift();
+                renderLiveChat();
+            }, 5000);
+        };
+    </script>
+</body>
+</html>
